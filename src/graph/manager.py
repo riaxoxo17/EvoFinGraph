@@ -12,6 +12,9 @@ from src.graph.builder import TemporalGraphBuilder
 from src.graph.statistics import GraphStatistics
 from src.logger import logger
 
+from src.community.validator import GraphValidator
+from src.community.detector import CommunityDetector
+
 
 class TemporalGraphManager:
 
@@ -30,6 +33,10 @@ class TemporalGraphManager:
         for timestep in timesteps:
 
             graph = self.builder.build_snapshot(timestep)
+
+            GraphValidator.validate(graph)
+
+            CommunityDetector.detect(graph)
 
             self.graphs[timestep] = graph
 

@@ -38,3 +38,16 @@ DEV_SNAPSHOTS = [20, 21, 22, 23, 24]
 ALL_SNAPSHOTS = list(range(1, 50))
 
 RANDOM_STATE = 42
+
+# ---------------------------------------------------------
+# Community Matching Configuration
+# ---------------------------------------------------------
+
+COMMUNITY_MATCHING_WEIGHTS = {
+    "member_overlap": 0.50,
+    "fraud_ratio": 0.25,
+    "density": 0.15,
+    "average_degree": 0.10,
+}
+
+COMMUNITY_MATCH_THRESHOLD = 0.60
