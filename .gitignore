@@ -1,0 +1,38 @@
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+.venv/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+
+# ========================================
+# Data
+# ========================================
+
+# Raw dataset (download separately)
+data/raw/
+
+# Generated graph snapshots
+data/snapshots/
+
+# Processed outputs
+outputs/models/
+outputs/figures/
+
+# Python cache
+.pytest_cache/

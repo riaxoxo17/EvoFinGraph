@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+networkx
+scikit-learn
+torch
+torch-geometric
+tqdm
+jupyter
+ipykernel
+pyyaml
+python-dotenv
+rich
+plotly
