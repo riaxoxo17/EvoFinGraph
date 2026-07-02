@@ -8,6 +8,7 @@ using the Community Continuity Score (CCS).
 from typing import Dict, Set
 
 import networkx as nx
+import numpy as np
 
 from src.config import (
     COMMUNITY_MATCHING_WEIGHTS,
@@ -150,41 +151,77 @@ class CommunityMatcher:
         Compute the Community Continuity Score (CCS).
         """
 
-        overlap = CommunityMatcher.compute_member_overlap(
+        feature = CommunityMatcher.compute_feature_similarity(
+
+            graph_a,
             nodes_a,
+
+            graph_b,
             nodes_b,
+
         )
 
         fraud = CommunityMatcher.compute_fraud_ratio_similarity(
+
             graph_a,
             nodes_a,
+
             graph_b,
             nodes_b,
+
         )
 
         density = CommunityMatcher.compute_density_similarity(
+
             graph_a,
             nodes_a,
+
             graph_b,
             nodes_b,
+
         )
 
         degree = CommunityMatcher.compute_average_degree_similarity(
+
             graph_a,
             nodes_a,
+
             graph_b,
             nodes_b,
+
+        )
+
+        size = CommunityMatcher.compute_size_similarity(
+
+            nodes_a,
+
+            nodes_b,
+
         )
 
         score = (
-            COMMUNITY_MATCHING_WEIGHTS["member_overlap"] * overlap
-            + COMMUNITY_MATCHING_WEIGHTS["fraud_ratio"] * fraud
-            + COMMUNITY_MATCHING_WEIGHTS["density"] * density
-            + COMMUNITY_MATCHING_WEIGHTS["average_degree"] * degree
+
+            COMMUNITY_MATCHING_WEIGHTS["feature_similarity"] * feature
+
+            +
+
+            COMMUNITY_MATCHING_WEIGHTS["fraud_ratio"] * fraud
+
+            +
+
+            COMMUNITY_MATCHING_WEIGHTS["density"] * density
+
+            +
+
+            COMMUNITY_MATCHING_WEIGHTS["average_degree"] * degree
+
+            +
+
+            COMMUNITY_MATCHING_WEIGHTS["community_size"] * size
+
         )
 
         return score
-
     @staticmethod
     def match(
         graph_a,
@@ -240,3 +277,87 @@ class CommunityMatcher:
                 }
 
         return matches
+    
+    @staticmethod
+    def compute_feature_similarity(
+
+        graph_a,
+        nodes_a,
+
+        graph_b,
+        nodes_b,
+
+    ):
+        """
+        Compare the mean feature vectors of two communities.
+        """
+
+        centroid_a = np.mean(
+
+            [
+                graph_a.nodes[node]["features"]
+                for node in nodes_a
+            ],
+
+            axis=0
+
+        )
+
+        centroid_b = np.mean(
+
+            [
+                graph_b.nodes[node]["features"]
+                for node in nodes_b
+            ],
+
+            axis=0
+
+        )
+
+        numerator = np.dot(
+            centroid_a,
+            centroid_b,
+        )
+
+        denominator = (
+
+            np.linalg.norm(centroid_a)
+
+            *
+
+            np.linalg.norm(centroid_b)
+
+        )
+
+        if denominator == 0:
+
+            return 0.0
+
+        return numerator / denominator
+    
+    @staticmethod
+    def compute_size_similarity(
+
+        nodes_a,
+
+        nodes_b,
+
+    ):
+        """
+        Compare community sizes.
+        """
+
+        size_a = len(nodes_a)
+
+        size_b = len(nodes_b)
+
+        maximum = max(
+            size_a,
+            size_b,
+            1
+        )
+
+        return 1 - (
+            abs(size_a - size_b)
+            / maximum
+        )

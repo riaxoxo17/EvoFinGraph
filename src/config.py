@@ -44,10 +44,17 @@ RANDOM_STATE = 42
 # ---------------------------------------------------------
 
 COMMUNITY_MATCHING_WEIGHTS = {
-    "member_overlap": 0.50,
-    "fraud_ratio": 0.25,
+
+    "feature_similarity": 0.40,
+
+    "fraud_ratio": 0.20,
+
     "density": 0.15,
-    "average_degree": 0.10,
+
+    "average_degree": 0.15,
+
+    "community_size": 0.10,
+
 }
 
-COMMUNITY_MATCH_THRESHOLD = 0.60
+COMMUNITY_MATCH_THRESHOLD = 0.45
