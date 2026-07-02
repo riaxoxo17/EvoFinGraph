@@ -1,18 +1,18 @@
 """
-XGBoost baseline for EvoFinGraph.
+Logistic Regression baseline.
 
-Uses temporal community features to predict
-fraudulent communities.
+Provides an interpretable baseline model
+for community-level fraud prediction.
 """
 
-from xgboost import XGBClassifier
+from sklearn.linear_model import LogisticRegression
 
 from src.models.base import BaseModel
 
 
-class XGBoostModel(BaseModel):
+class LogisticModel(BaseModel):
     """
-    XGBoost classifier.
+    Logistic Regression baseline.
     """
 
     def __init__(
@@ -22,21 +22,13 @@ class XGBoostModel(BaseModel):
 
         super().__init__()
 
-        self.model = XGBClassifier(
+        self.model = LogisticRegression(
 
-            n_estimators=200,
-
-            max_depth=4,
-
-            learning_rate=0.05,
-
-            subsample=0.8,
-
-            colsample_bytree=0.8,
-
-            eval_metric="logloss",
+            max_iter=1000,
 
             random_state=random_state,
+
+            class_weight="balanced",
 
         )
 
@@ -49,6 +41,9 @@ class XGBoostModel(BaseModel):
         X_train,
         y_train,
     ):
+        """
+        Train Logistic Regression.
+        """
 
         self.model.fit(
 
@@ -66,6 +61,9 @@ class XGBoostModel(BaseModel):
         self,
         X_test,
     ):
+        """
+        Predict fraud labels.
+        """
 
         return self.model.predict(
             X_test
@@ -75,9 +73,14 @@ class XGBoostModel(BaseModel):
         self,
         X_test,
     ):
+        """
+        Predict fraud probabilities.
+        """
 
         return self.model.predict_proba(
+
             X_test
+
         )[:, 1]
 
     # --------------------------------------------------
@@ -89,18 +92,18 @@ class XGBoostModel(BaseModel):
         feature_names,
     ):
         """
-        Return XGBoost feature importances.
+        Return Logistic Regression coefficients.
         """
 
         importance = {
 
-            feature: score
+            feature: coefficient
 
-            for feature, score in zip(
+            for feature, coefficient in zip(
 
                 feature_names,
 
-                self.model.feature_importances_,
+                self.model.coef_[0],
 
             )
 
@@ -112,7 +115,7 @@ class XGBoostModel(BaseModel):
 
                 importance.items(),
 
-                key=lambda x: x[1],
+                key=lambda x: abs(x[1]),
 
                 reverse=True,
 
