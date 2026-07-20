@@ -1,0 +1,10 @@
+Feature,Importance
+feature_drift,0.237506
+variance_drift,0.13049889
+fraud_growth,0.12957232
+density_change,0.12261081
+structural_stability,0.10358988
+growth_rate,0.095519386
+degree_change,0.09538253
+node_churn,0.08532023
+clustering_change,0.0
