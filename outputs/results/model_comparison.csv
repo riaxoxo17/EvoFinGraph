@@ -1,0 +1,4 @@
+Model,Accuracy,Precision,Recall,F1 Score,ROC-AUC
+Logistic Regression,0.6698,0.3878,0.7917,0.5205,0.8725
+XGBoost,0.8396,0.6667,0.5833,0.6222,0.8537
+GraphSAGE,0.8366,0.2099,0.1241,0.156,0.8016

@@ -12,3 +12,9 @@ pyyaml
 python-dotenv
 rich
 plotly
+fastapi
+uvicorn
+
+neo4j
+
+neo4j

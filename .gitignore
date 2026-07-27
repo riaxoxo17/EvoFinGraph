@@ -36,3 +36,5 @@ outputs/figures/
 
 # Python cache
 .pytest_cache/
+neo4j_data/
+data/processed/processed_transactions.csv
